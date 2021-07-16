@@ -1,0 +1,23 @@
+{
+  "name": "glorified-lookup",
+  "version": "1.0.0",
+  "description": "In Memory DB",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juluahamed/glorified-lookup.git"
+  },
+  "author": "Julu Ahamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/juluahamed/glorified-lookup/issues"
+  },
+  "homepage": "https://github.com/juluahamed/glorified-lookup#readme",
+  "dependencies": {
+    "jest": "^27.0.6",
+    "prompt": "^1.1.0"
+  }
+}
