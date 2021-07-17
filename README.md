@@ -8,7 +8,7 @@ An in memory db in nodejs.
 ## TODOS & Future Scope
 - Add persistance for crashes and reboot
 - Add  malformed Input commands handling
-- Add client connection object to handle issues with multiple clients connecting at the same time
+- Add client connection object to handle issues with multiple clients connecting at the same time [Fixed]
 
 ## Assumptions
 - Cascading/ nesting MULTI commands is not implemented. 
