@@ -35,3 +35,10 @@ An in memory db in nodejs.
 
 ## Testing
 - Run `npm run test`
+
+![Screenshot from 2021-07-16 06-29-04](https://user-images.githubusercontent.com/6171567/125876020-60b0ae9d-1414-4509-a1e5-edfd1081e548.png)
+
+## Sample Screenshot
+![Screenshot from 2021-07-16 06-35-23](https://user-images.githubusercontent.com/6171567/125876474-bc9fcfdd-263f-4f33-a637-e9505e275186.png)
+
+
