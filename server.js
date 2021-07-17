@@ -13,7 +13,7 @@ server.listen(port,host,function(){
    console.log(`Server started on port ${port} at ${host}`); 
 });
 
-
+const connections = {};
 
 //Declare connection listener function
 function onClientConnection(sock) {
@@ -24,8 +24,20 @@ function onClientConnection(sock) {
         //Log data from the client
         console.log(`${sock.remoteAddress}:${sock.remotePort} Says : ${data} `);
         //Send back the data to the client.
+        let connectionObj = null
+        if (connections[`${sock.remoteAddress}:${sock.remotePort}`]) {
+            connectionObj = connections[`${sock.remoteAddress}:${sock.remotePort}`]
+        } else {
+            connectionObj = {
+                multiMode: false,
+                currentInstructionStack: [],
+                clientState: {},
+                responseArray: [],
+            }
+            connections[`${sock.remoteAddress}:${sock.remotePort}`] = connectionObj
+        }
 
-        const result = commandParser(`${data}`)
+        const result = commandParser(`${data}`, connectionObj)
         sock.write(`${result}`);
 
     });

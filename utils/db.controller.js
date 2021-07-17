@@ -3,9 +3,9 @@
 let dataStore = {};
 let clientState = {};
 
-const setValue = (key, value)=> {
+const setValue = (key, value, connObj)=> {
     dataStore[key] = value
-    clientState[key] = value
+    connObj.clientState[key] = value
     return null
 }
 
@@ -17,11 +17,11 @@ const getValue = (key)=> {
     }
 }
 
-const delValue = (key)=> {
+const delValue = (key,connObj)=> {
     if (dataStore[key]) {
         const response = `${key}:${dataStore[key]}`
         delete dataStore[key]
-        delete clientState[key] 
+        delete connObj.clientState[key] 
         return response
     } else {
         return null
@@ -29,12 +29,12 @@ const delValue = (key)=> {
 }
 
 
-const incValue = (key)=> {
+const incValue = (key, connObj)=> {
     if (dataStore[key]) {
         
         if (!dataStore[key].isNaN) {
             dataStore[key] = Number(dataStore[key]) + 1;
-            clientState[key] = dataStore[key]
+            connObj.clientState[key] = dataStore[key]
             return dataStore[key]
         } else {
             return 'Cannot increment non numeric values'
@@ -42,17 +42,17 @@ const incValue = (key)=> {
         
     } else {
         dataStore[key] = 1
-        clientState[key]  = 1
+        connObj.clientState[key]  = 1
         return `${key}: ${dataStore[key]}`
     }
 }
 
-const incByValue = (key, increment)=> {
+const incByValue = (key, increment, connObj)=> {
     if (dataStore[key]) {
         
         if (!dataStore[key].isNaN) {
             dataStore[key] =  Number(dataStore[key]) + Number(increment)
-            clientState[key] = dataStore[key]
+            connObj.clientState[key] = dataStore[key]
             return dataStore[key]
         } else {
             return 'Cannot increment non numeric values'
@@ -60,17 +60,17 @@ const incByValue = (key, increment)=> {
         
     } else {
         dataStore[key] = increment
-        clientState[key] = dataStore[key]
+        connObj.clientState[key] = dataStore[key]
         return `${key}: ${dataStore[key]}`
     }
 }
 
-const compactQueries = () => {
+const compactQueries = (connObj) => {
     const compactStatements = []
-    for (const [key, value] of Object.entries(clientState)) {
+    for (const [key, value] of Object.entries(connObj.clientState)) {
         compactStatements.push(`SET ${key} ${value}`);
     }
-    clientState = {}
+    connObj.clientState = {}
     return compactStatements.join(' \n ')
 }
 

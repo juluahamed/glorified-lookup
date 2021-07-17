@@ -5,52 +5,52 @@ let currentInstructionStack = [];
 
 // Parse the input and send to corresponding processor functions
 // TODO: Malformed input edge cases
-const commandParser = (commandString) => {
+const commandParser = (commandString, connObj) => {
     let response = null;
     const processedCommands = commandString.split(' ')
 
     if (processedCommands[0] === 'EXEC' || processedCommands[0] === 'DISCARD') {
-        multiMode = false
+        connObj.multiMode = false
     }
 
-    if (multiMode) {
-        currentInstructionStack.push(commandString)
+    if (connObj.multiMode) {
+        connObj.currentInstructionStack.push(commandString)
         return null
     }
     
     switch (processedCommands[0]) {
         case 'SET':
-            response = setValue(processedCommands[1], processedCommands[2])
+            response = setValue(processedCommands[1], processedCommands[2],connObj)
             return response
         case 'GET':
             response = getValue(processedCommands[1])
             return response
         case 'DEL':
-            response = delValue(processedCommands[1])
+            response = delValue(processedCommands[1],connObj)
             return response
         case 'INCR':
-            response = incValue(processedCommands[1])
+            response = incValue(processedCommands[1],connObj)
             return response
         case 'INCRBY':
-            response = incByValue(processedCommands[1], processedCommands[2])
+            response = incByValue(processedCommands[1], processedCommands[2], connObj)
             return response
         case 'MULTI':
-            multiMode = true;
+            connObj.multiMode = true;
             return `Enabling multi line commands`
         case 'EXEC':
-            const responseArray = [];
-            multiMode = false
-            for (let i=0; i<currentInstructionStack.length; i++) {
-                const response = commandParser(currentInstructionStack[i]);
-                responseArray.push(response)
+            connObj.responseArray = [];
+            connObj.multiMode = false
+            for (let i=0; i<connObj.currentInstructionStack.length; i++) {
+                const response = commandParser(connObj.currentInstructionStack[i], connObj);
+                connObj.responseArray.push(response)
             }
-            currentInstructionStack = [];
-            return JSON.stringify(responseArray)
+            connObj.currentInstructionStack = [];
+            return JSON.stringify(connObj.responseArray)
         case 'DISCARD':
-            currentInstructionStack = [];
+            connObj.currentInstructionStack = [];
             return 'Discarding multi line commands'
         case 'COMPACT':
-            response = compactQueries()
+            response = compactQueries(connObj)
             return response
         default:
             console.log('Oops...')
